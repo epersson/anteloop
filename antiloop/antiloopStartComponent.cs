@@ -27,6 +27,7 @@ namespace antiloop
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
+            pManager.AddNumberParameter("Number", "N", "outputNumber", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -34,6 +35,8 @@ namespace antiloop
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
+            pManager.AddNumberParameter("Number", "N", "outputNumber", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -43,6 +46,10 @@ namespace antiloop
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            double n = new double();
+            if (!DA.GetData(0, ref n)) { return; }
+            DA.SetData(0, n);
+            DA.SetData(1, this);
         }
 
         /// <summary>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
+using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
 namespace antiloop
@@ -24,6 +26,7 @@ namespace antiloop
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddNumberParameter("Number", "n", "Input Number", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -40,10 +43,26 @@ namespace antiloop
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            double data = new double();
-            if (!DA.GetData(0, ref data)) { return; }
+            double n = new double();
+            antiloopStartComponent loopStart = new antiloopStartComponent();
 
-            data =+ data;
+            if (!DA.GetData(0, ref n)) { return; }
+            if (!DA.GetData(1, ref loopStart)) { return; }
+
+            if (true)
+            {
+                GH_Number num = new GH_Number(5.0);
+                GH_Structure<GH_Number> newStructure = new GH_Structure<GH_Number>();
+                newStructure.Append(num);
+                GH_Structure<GH_Number> oldStructure = ((GH_Structure<GH_Number>)loopStart.Params.Input[0].VolatileData);
+                oldStructure.Clear();
+                oldStructure.Append(num);
+
+                //IList<GH_Path> paths = ((GH_Structure<GH_Number>)loopStart.Params.Input[0].VolatileData).Paths;
+                //GH_Path path = paths[0];
+            }
+
+            n += n;
         }
 
         /// <summary>
