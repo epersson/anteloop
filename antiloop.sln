@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "antiloop", "antiloop\antiloop.csproj", "{82FEBAC0-8278-4F19-950C-08413BCE9464}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug64|Any CPU = Debug64|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82FEBAC0-8278-4F19-950C-08413BCE9464}.Debug64|Any CPU.ActiveCfg = Debug64|Any CPU
+		{82FEBAC0-8278-4F19-950C-08413BCE9464}.Debug64|Any CPU.Build.0 = Debug64|Any CPU
+		{82FEBAC0-8278-4F19-950C-08413BCE9464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82FEBAC0-8278-4F19-950C-08413BCE9464}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFECDFAA-5A38-4E87-9E7A-03DE3F150593}
+	EndGlobalSection
+EndGlobal
