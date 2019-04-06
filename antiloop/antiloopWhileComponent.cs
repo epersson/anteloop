@@ -49,12 +49,16 @@ namespace antiloop
             if (!DA.GetData(0, ref n)) { return; }
             if (!DA.GetData(1, ref loopStart)) { return; }
 
+
             if (n < 10)
             {
                 GH_Number num = new GH_Number(n + 1);
                 GH_Structure<GH_Number> oldStructure = ((GH_Structure<GH_Number>)loopStart.Params.Input[0].VolatileData);
                 oldStructure.Clear();
                 oldStructure.Append(num);
+
+                // Dangerous
+                loopStart.ExpireSolution(true);
             }
             else
             {

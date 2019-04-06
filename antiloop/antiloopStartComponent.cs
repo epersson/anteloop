@@ -28,7 +28,6 @@ namespace antiloop
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddNumberParameter("Number", "N", "inputNumber", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Bool", "IO", "trigger", GH_ParamAccess.item);
         }
 
         /// <summary>
