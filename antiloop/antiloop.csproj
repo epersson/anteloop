@@ -81,5 +81,6 @@ Erase "$(TargetPath)"</PostBuildEvent>
     <StartArguments>
     </StartArguments>
     <StartAction>Program</StartAction>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 </Project>

@@ -25,7 +25,8 @@ namespace antiloop
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddNumberParameter("Number", "n", "Input Number", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Condition", "C", "While condition is true, the Antiloop will continue to run", GH_ParamAccess.item, false);
+            pManager.AddNumberParameter("Number", "N", "Input Number", GH_ParamAccess.item);
             pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
         }
 
@@ -43,14 +44,16 @@ namespace antiloop
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            bool condition = new bool();
             double n = new double();
             antiloopStartComponent loopStart = new antiloopStartComponent();
 
-            if (!DA.GetData(0, ref n)) { return; }
-            if (!DA.GetData(1, ref loopStart)) { return; }
+            if (!DA.GetData(1, ref condition)) { return; }
+            if (!DA.GetData(1, ref n)) { return; }
+            if (!DA.GetData(2, ref loopStart)) { return; }
 
 
-            if (n < 10)
+            if (condition)
             {
                 GH_Number num = new GH_Number(n + 1);
                 GH_Structure<GH_Number> oldStructure = ((GH_Structure<GH_Number>)loopStart.Params.Input[0].VolatileData);
