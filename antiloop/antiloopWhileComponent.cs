@@ -26,7 +26,7 @@ namespace Antiloop
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBooleanParameter("Condition", "C", "While condition is true, the Antiloop will continue to run", GH_ParamAccess.item, false);
-            pManager.AddNumberParameter("Number", "N", "Input Number", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
             pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
         }
 
@@ -35,7 +35,7 @@ namespace Antiloop
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddNumberParameter("Number", "N", "outputNumber", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -45,26 +45,25 @@ namespace Antiloop
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             bool condition = new bool();
-            double n = new double();
+            GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
             AntiloopDoComponent loopStart = new AntiloopDoComponent();
 
             if (!DA.GetData(0, ref condition)) { return; }
-            if (!DA.GetData(1, ref n)) { return; }
+            if (!DA.GetDataTree(1, out data)) { return; }
             if (!DA.GetData(2, ref loopStart)) { return; }
 
 
             if (condition)
             {
-                GH_Structure<GH_Number> oldStructure = ((GH_Structure<GH_Number>)loopStart.Params.Input[0].VolatileData);
-                oldStructure.Clear();
-                oldStructure.Append(new GH_Number(n));
+                loopStart.Params.Input[0].ClearData();
+                loopStart.Params.Input[0].AddVolatileDataTree(data);
 
                 // Dangerous
                 loopStart.ExpireSolution(true);
             }
             else
             {
-                DA.SetData(0, n);
+                DA.SetDataTree(0, data);
             }
 
 

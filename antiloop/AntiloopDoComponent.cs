@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
+using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
 namespace Antiloop
@@ -27,7 +29,7 @@ namespace Antiloop
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddNumberParameter("Number", "N", "inputNumber", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -35,7 +37,7 @@ namespace Antiloop
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddNumberParameter("Number", "N", "outputNumber", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
             pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
         }
 
@@ -46,9 +48,9 @@ namespace Antiloop
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            double n = new double();
-            if (!DA.GetData(0, ref n)) { return; }
-            DA.SetData(0, n);
+            GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
+            if (!DA.GetDataTree(0, out data)) { return; }
+            DA.SetDataTree(0, data);
             DA.SetData(1, this);
         }
 
