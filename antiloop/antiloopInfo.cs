@@ -2,9 +2,9 @@
 using System.Drawing;
 using Grasshopper.Kernel;
 
-namespace antiloop
+namespace Antiloop
 {
-    public class antiloopInfo : GH_AssemblyInfo
+    public class AntiloopInfo : GH_AssemblyInfo
     {
         public override string Name
         {

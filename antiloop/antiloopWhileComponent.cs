@@ -6,15 +6,15 @@ using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
-namespace antiloop
+namespace Antiloop
 {
-    public class antiloopWhileComponent : GH_Component
+    public class AntiloopWhileComponent : GH_Component
     {
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
-        public antiloopWhileComponent()
-          : base("Antiloop", "AntiloopWhile",
+        public AntiloopWhileComponent()
+          : base("Antiloop While", "While",
               "Description",
               "Antiloop", "Antiloop")
         {
@@ -46,19 +46,18 @@ namespace antiloop
         {
             bool condition = new bool();
             double n = new double();
-            antiloopStartComponent loopStart = new antiloopStartComponent();
+            AntiloopDoComponent loopStart = new AntiloopDoComponent();
 
-            if (!DA.GetData(1, ref condition)) { return; }
+            if (!DA.GetData(0, ref condition)) { return; }
             if (!DA.GetData(1, ref n)) { return; }
             if (!DA.GetData(2, ref loopStart)) { return; }
 
 
             if (condition)
             {
-                GH_Number num = new GH_Number(n + 1);
                 GH_Structure<GH_Number> oldStructure = ((GH_Structure<GH_Number>)loopStart.Params.Input[0].VolatileData);
                 oldStructure.Clear();
-                oldStructure.Append(num);
+                oldStructure.Append(new GH_Number(n));
 
                 // Dangerous
                 loopStart.ExpireSolution(true);

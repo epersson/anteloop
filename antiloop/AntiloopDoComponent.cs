@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
-namespace antiloop
+namespace Antiloop
 {
-    public class antiloopStartComponent : GH_Component
+    public class AntiloopDoComponent : GH_Component
     {
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
@@ -15,8 +15,8 @@ namespace antiloop
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public antiloopStartComponent()
-          : base("antiloop", "AntiloopStart",
+        public AntiloopDoComponent()
+          : base("Antiloop Do", "Do",
               "Description",
               "Antiloop", "Antiloop")
         {

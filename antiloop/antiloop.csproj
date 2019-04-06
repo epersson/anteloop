@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="antiloopStartComponent.cs" />
-    <Compile Include="antiloopInfo.cs" />
-    <Compile Include="antiloopWhileComponent.cs" />
+    <Compile Include="AntiloopDoComponent.cs" />
+    <Compile Include="AntiloopInfo.cs" />
+    <Compile Include="AntiloopWhileComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
