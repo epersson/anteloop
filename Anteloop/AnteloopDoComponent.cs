@@ -6,9 +6,9 @@ using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
-namespace Antiloop
+namespace Anteloop
 {
-    public class AntiloopDoComponent : GH_Component
+    public class AnteloopDoComponent : GH_Component
     {
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
@@ -17,10 +17,10 @@ namespace Antiloop
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public AntiloopDoComponent()
-          : base("Antiloop Do", "Do",
+        public AnteloopDoComponent()
+          : base("Anteloop Do", "Do",
               "Description",
-              "Antiloop", "Antiloop")
+              "Anteloop", "Anteloop")
         {
         }
 
