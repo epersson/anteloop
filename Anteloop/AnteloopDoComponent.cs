@@ -8,7 +8,7 @@ using Rhino.Geometry;
 
 namespace Anteloop
 {
-    public class AnteloopDoComponent : GH_Component
+    public class AnteloopDoComponent : GH_Component, IGH_VariableParameterComponent, IAnteloop_Component
     {
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
@@ -24,12 +24,20 @@ namespace Anteloop
         {
         }
 
+        public int InputParamCount => 0;
+
+        public int OutputParamCount => 1;
+
+        public AnteloopWhileComponent WhileComponent { get; set; } = null;
+
+        public Anteloop_IO IO { get; set; } = null;
+
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
+            pManager.AddGenericParameter("Data 1", "D1", "Data", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -37,8 +45,8 @@ namespace Anteloop
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
             pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Data 1", "D1", "Data", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -48,10 +56,37 @@ namespace Anteloop
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            DA.SetData(0, this);
+
             GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
             if (!DA.GetDataTree(0, out data)) { return; }
-            DA.SetDataTree(0, data);
-            DA.SetData(1, this);
+            DA.SetDataTree(1, data);
+        }
+
+        public bool CanInsertParameter(GH_ParameterSide side, int index)
+        {
+            return index >= (side == GH_ParameterSide.Input ? InputParamCount : OutputParamCount);
+        }
+
+        public bool CanRemoveParameter(GH_ParameterSide side, int index)
+        {
+            return index >= (side == GH_ParameterSide.Input ? InputParamCount : OutputParamCount);
+        }
+
+        public IGH_Param CreateParameter(GH_ParameterSide side, int index)
+        {
+            IO.AddParams(this, side, index);
+            return null;
+        }
+
+        public bool DestroyParameter(GH_ParameterSide side, int index)
+        {
+            return true;
+        }
+
+        public void VariableParameterMaintenance()
+        {
+            return;
         }
 
         /// <summary>

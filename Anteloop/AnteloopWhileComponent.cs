@@ -9,7 +9,7 @@ using Rhino.Geometry;
 
 namespace Anteloop
 {
-    public class AnteloopWhileComponent : GH_Component, IGH_VariableParameterComponent
+    public class AnteloopWhileComponent : GH_Component, IGH_VariableParameterComponent, IAnteloop_Component
 
     {
         /// <summary>
@@ -21,6 +21,15 @@ namespace Anteloop
               "Anteloop", "Anteloop")
         {
         }
+
+
+        public int InputParamCount => 2;
+
+        public int OutputParamCount => 0;
+
+        private AnteloopDoComponent DoComponent { get; set; } = null;
+
+        private Anteloop_IO IO { get; set; } = null;
 
         /// <summary>
         /// Registers all the input parameters for this component.
@@ -46,14 +55,15 @@ namespace Anteloop
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+
+            AnteloopDoComponent loopStart = new AnteloopDoComponent();
             bool condition = new bool();
             GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
-            AnteloopDoComponent loopStart = new AnteloopDoComponent();
 
-            if (!DA.GetData(0, ref condition)) { return; }
-            if (!DA.GetDataTree(1, out data)) { return; }
-            if (!DA.GetData(2, ref loopStart)) { return; }
-
+            if (!DA.GetData(0, ref loopStart)) { return; }
+            if (!DA.GetData(1, ref condition)) { return; }
+            
+            if (!DA.GetDataTree(2, out data)) { return; }
 
             if (condition)
             {
@@ -71,52 +81,51 @@ namespace Anteloop
 
         }
 
-        private int fixedParams(GH_ParameterSide side)
+        private void LoopParameterChanged(IGH_DocumentObject sender, GH_ObjectChangedEventArgs e)
         {
-            return side == GH_ParameterSide.Input ? 2 : 0;
+            if (!(Params.Input[0] is AnteloopDoComponent))
+            {
+                DoComponent.WhileComponent = null;
+                DoComponent.IO = null;
+                DoComponent = null;
+            }
+            else 
+            {
+                // Unregister
+                DoComponent.WhileComponent = null;
+                DoComponent.IO = null;
+                DoComponent = null;
+
+                DoComponent = (AnteloopDoComponent) Params.Input[0];
+                DoComponent.IO = IO;
+                DoComponent.WhileComponent = this;
+            }
         }
 
         public bool CanInsertParameter(GH_ParameterSide side, int index)
         {
-            return index >= fixedParams(side);
+            return index >= (side == GH_ParameterSide.Input ? InputParamCount : OutputParamCount);
         }
 
         public bool CanRemoveParameter(GH_ParameterSide side, int index)
         {
-            return index >= fixedParams(side);
+            return index >= (side == GH_ParameterSide.Input ? InputParamCount : OutputParamCount);
         }
 
         public IGH_Param CreateParameter(GH_ParameterSide side, int index)
         {
-            Param_GenericObject newParam = new Param_GenericObject();
-            Param_GenericObject otherParam = new Param_GenericObject();
-
-            if (side == GH_ParameterSide.Input)
-                this.Params.RegisterOutputParam(otherParam, index - 2);
-            else if (side == GH_ParameterSide.Output)
-                this.Params.RegisterInputParam(otherParam, index + 2);
-
-            this.Params.OnParametersChanged();
-
-            return newParam;
+            IO.AddParams(this, side, index);
+            return null;
         }
 
         public bool DestroyParameter(GH_ParameterSide side, int index)
         {
-            
-            return true;
+            IO.RemoveParams(this, side, index);
+            return false;
         }
 
         public void VariableParameterMaintenance()
         {
-            for (int i = 0; i < this.Params.Output.Count; i++)
-            {
-                this.Params.Input[i + 2].Name = "Data " + i.ToString();
-                this.Params.Input[i + 2].NickName = "D" + i.ToString();
-                this.Params.Output[i].Name = "Data " + i.ToString();
-                this.Params.Output[i].NickName = "D" + i.ToString();
-            }
-
             return;
         }
 

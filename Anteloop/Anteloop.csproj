@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnteloopDoComponent.cs" />
+    <Compile Include="Anteloop_IO.cs" />
     <Compile Include="AnteloopInfo.cs" />
     <Compile Include="AnteloopWhileComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
