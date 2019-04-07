@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Parameters;
 using Rhino.Geometry;
 
 namespace Antiloop
 {
-    public class AntiloopWhileComponent : GH_Component
+    public class AntiloopWhileComponent : GH_Component, IGH_VariableParameterComponent
     {
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
@@ -25,9 +26,9 @@ namespace Antiloop
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBooleanParameter("Condition", "C", "While condition is true, the Antiloop will continue to run", GH_ParamAccess.item, false);
-            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
-            pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Antiloop Do", "Loop", "Loop", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("While Condition", "While", "While the condition is true, the Antiloop will continue to run", GH_ParamAccess.item, false);
+            pManager.AddGenericParameter("Data 1", "D1", "Data", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Antiloop
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
+            pManager.AddGenericParameter("Data 1", "D1", "Data", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -44,29 +45,78 @@ namespace Antiloop
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            bool condition = new bool();
-            GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
-            AntiloopDoComponent loopStart = new AntiloopDoComponent();
+            //bool condition = new bool();
+            //GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
+            //AntiloopDoComponent loopStart = new AntiloopDoComponent();
 
-            if (!DA.GetData(0, ref condition)) { return; }
-            if (!DA.GetDataTree(1, out data)) { return; }
-            if (!DA.GetData(2, ref loopStart)) { return; }
+            //if (!DA.GetData(0, ref condition)) { return; }
+            //if (!DA.GetDataTree(1, out data)) { return; }
+            //if (!DA.GetData(2, ref loopStart)) { return; }
 
 
-            if (condition)
+            //if (condition)
+            //{
+            //    loopStart.Params.Input[0].ClearData();
+            //    loopStart.Params.Input[0].AddVolatileDataTree(data);
+
+            //    // Dangerous
+            //    loopStart.ExpireSolution(true);
+            //}
+            //else
+            //{
+            //    DA.SetDataTree(0, data);
+            //}
+
+
+        }
+
+        private int fixedParams(GH_ParameterSide side)
+        {
+            return side == GH_ParameterSide.Input ? 2 : 0;
+        }
+
+        public bool CanInsertParameter(GH_ParameterSide side, int index)
+        {
+            return index >= fixedParams(side);
+        }
+
+        public bool CanRemoveParameter(GH_ParameterSide side, int index)
+        {
+            return index >= fixedParams(side);
+        }
+
+        public IGH_Param CreateParameter(GH_ParameterSide side, int index)
+        {
+            Param_GenericObject newParam = new Param_GenericObject();
+            Param_GenericObject otherParam = new Param_GenericObject();
+
+            if (side == GH_ParameterSide.Input)
+                this.Params.RegisterOutputParam(otherParam, index - 2);
+            else if (side == GH_ParameterSide.Output)
+                this.Params.RegisterInputParam(otherParam, index + 2);
+
+            this.Params.OnParametersChanged();
+
+            return newParam;
+        }
+
+        public bool DestroyParameter(GH_ParameterSide side, int index)
+        {
+            
+            return true;
+        }
+
+        public void VariableParameterMaintenance()
+        {
+            for (int i = 0; i < this.Params.Output.Count; i++)
             {
-                loopStart.Params.Input[0].ClearData();
-                loopStart.Params.Input[0].AddVolatileDataTree(data);
-
-                // Dangerous
-                loopStart.ExpireSolution(true);
-            }
-            else
-            {
-                DA.SetDataTree(0, data);
+                this.Params.Input[i + 2].Name = "Data " + i.ToString();
+                this.Params.Input[i + 2].NickName = "D" + i.ToString();
+                this.Params.Output[i].Name = "Data " + i.ToString();
+                this.Params.Output[i].NickName = "D" + i.ToString();
             }
 
-
+            return;
         }
 
         /// <summary>
