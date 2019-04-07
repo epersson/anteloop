@@ -2,7 +2,7 @@
 using System.Drawing;
 using Grasshopper.Kernel;
 
-namespace Antiloop
+namespace Anteloop
 {
     public class AnteloopInfo : GH_AssemblyInfo
     {
