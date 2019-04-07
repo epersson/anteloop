@@ -4,13 +4,13 @@ using Grasshopper.Kernel;
 
 namespace Antiloop
 {
-    public class AntiloopInfo : GH_AssemblyInfo
+    public class AnteloopInfo : GH_AssemblyInfo
     {
         public override string Name
         {
             get
             {
-                return "antiloop";
+                return "Anteloop";
             }
         }
         public override Bitmap Icon

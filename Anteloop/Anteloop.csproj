@@ -8,8 +8,8 @@
     <ProjectGuid>{82FEBAC0-8278-4F19-950C-08413BCE9464}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Antiloop</RootNamespace>
-    <AssemblyName>antiloop</AssemblyName>
+    <RootNamespace>Anteloop</RootNamespace>
+    <AssemblyName>Anteloop</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntiloopDoComponent.cs" />
-    <Compile Include="AntiloopInfo.cs" />
-    <Compile Include="AntiloopWhileComponent.cs" />
+    <Compile Include="AnteloopDoComponent.cs" />
+    <Compile Include="AnteloopInfo.cs" />
+    <Compile Include="AnteloopWhileComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,17 +6,17 @@ using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
-namespace Antiloop
+namespace Anteloop
 {
-    public class AntiloopWhileComponent : GH_Component
+    public class AnteloopWhileComponent : GH_Component
     {
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
-        public AntiloopWhileComponent()
-          : base("Antiloop While", "While",
+        public AnteloopWhileComponent()
+          : base("Anteloop While", "While",
               "Description",
-              "Antiloop", "Antiloop")
+              "Anteloop", "Anteloop")
         {
         }
 
@@ -25,7 +25,7 @@ namespace Antiloop
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBooleanParameter("Condition", "C", "While condition is true, the Antiloop will continue to run", GH_ParamAccess.item, false);
+            pManager.AddBooleanParameter("Condition", "C", "While condition is true, the Anteloop will continue to run", GH_ParamAccess.item, false);
             pManager.AddGenericParameter("Data", "Data", "Data", GH_ParamAccess.tree);
             pManager.AddGenericParameter("Loop", "Loop", "Loop", GH_ParamAccess.item);
         }
@@ -46,7 +46,7 @@ namespace Antiloop
         {
             bool condition = new bool();
             GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
-            AntiloopDoComponent loopStart = new AntiloopDoComponent();
+            AnteloopDoComponent loopStart = new AnteloopDoComponent();
 
             if (!DA.GetData(0, ref condition)) { return; }
             if (!DA.GetDataTree(1, out data)) { return; }
