@@ -62,20 +62,35 @@ namespace Anteloop
 
             if (!DA.GetData(0, ref loopStart)) { return; }
             if (!DA.GetData(1, ref condition)) { return; }
-            
-            if (!DA.GetDataTree(2, out data)) { return; }
+
+
+            int dataParamCount = Math.Min(Params.Input.Count - InputParamCount, DoComponent.Params.Output.Count - DoComponent.OutputParamCount);
 
             if (condition)
             {
-               loopStart.Params.Input[0].ClearData();
-               loopStart.Params.Input[0].AddVolatileDataTree(data);
+                for (int i = 0; i < dataParamCount; i++)
+                {
+                    int while_i = i + InputParamCount;
+                    int do_i = i + DoComponent.OutputParamCount;
 
-               // Dangerous
-               loopStart.ExpireSolution(true);
+                    if (!DA.GetDataTree(while_i, out data)) { continue; }
+                    loopStart.Params.Input[do_i].ClearData();
+                    loopStart.Params.Input[do_i].AddVolatileDataTree(data);
+                }
+
+                // Dangerous
+                loopStart.ExpireSolution(true);
             }
             else
             {
-               DA.SetDataTree(0, data);
+                for (int i = 0; i < dataParamCount; i++)
+                {
+                    int whileInput_i = i + InputParamCount;
+                    int whileOutput_i = i + OutputParamCount;
+
+                    if (!DA.GetDataTree(whileInput_i, out data)) { continue; }
+                    DA.SetDataTree(whileOutput_i, data);
+                }
             }
 
 
