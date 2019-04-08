@@ -22,6 +22,7 @@ namespace Anteloop
         {
         }
 
+        private bool eventHandlerSet = false;
 
         public int InputParamCount => 2;
 
@@ -55,6 +56,8 @@ namespace Anteloop
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+
+            SetupEventHandler();
 
             AnteloopDoComponent loopStart = new AnteloopDoComponent();
             bool condition = new bool();
@@ -96,25 +99,42 @@ namespace Anteloop
 
         }
 
+        private void SetupEventHandler()
+        {
+            if (eventHandlerSet)
+                return;
+
+            Params.Input[0].ObjectChanged += LoopParameterChanged;
+
+            eventHandlerSet = true;
+        }
+
         private void LoopParameterChanged(IGH_DocumentObject sender, GH_ObjectChangedEventArgs e)
         {
-            if (!(Params.Input[0] is AnteloopDoComponent))
+            // Unregister
+            if (DoComponent != null)
             {
                 DoComponent.WhileComponent = null;
                 DoComponent.IO = null;
                 DoComponent = null;
             }
-            else 
+            if (!Params.Input[0].VolatileData.IsEmpty)
             {
-                // Unregister
-                DoComponent.WhileComponent = null;
-                DoComponent.IO = null;
-                DoComponent = null;
+                //GH_Path path = Params.Input[0].VolatileData.Paths[0];
+                //var vol = Params.Input[0].VolatileData as GH_Structure<IGH_Goo>;
+                //var comp = vol.Branches[0][0];
+                //var anteCompWrap = comp as GH_ObjectWrapper;
+                //DoComponent = anteCompWrap.Value as AnteloopDoComponent;
+                GH_Path path = Params.Input[0].VolatileData.Paths[0];
+                DoComponent = ((GH_ObjectWrapper)Params.Input[0].VolatileData.get_Branch(path)[0]).Value as AnteloopDoComponent;
+                if (DoComponent != null)
+                {
+                    DoComponent.WhileComponent = this;
+                    IO = new Anteloop_IO(DoComponent, this);
+                    DoComponent.IO = IO;
+                }
+            }
 
-                DoComponent = (AnteloopDoComponent) Params.Input[0];
-                DoComponent.IO = IO;
-                DoComponent.WhileComponent = this;
-            }
         }
 
         public bool CanInsertParameter(GH_ParameterSide side, int index)

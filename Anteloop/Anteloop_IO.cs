@@ -21,7 +21,7 @@ namespace Anteloop
 
         private AnteloopWhileComponent WhileComponent { get; set; } = null;
 
-        Anteloop_IO(AnteloopDoComponent doComponent, AnteloopWhileComponent whileComponent)
+        public Anteloop_IO(AnteloopDoComponent doComponent, AnteloopWhileComponent whileComponent)
         {
             DoComponent = doComponent;
             WhileComponent = whileComponent;
