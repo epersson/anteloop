@@ -59,8 +59,17 @@ namespace Anteloop
             DA.SetData(0, this);
 
             GH_Structure<IGH_Goo> data = new GH_Structure<IGH_Goo>();
-            if (!DA.GetDataTree(0, out data)) { return; }
+
             DA.SetDataTree(1, data);
+            int dataParamCount = Params.Input.Count - InputParamCount;
+            for (int i = 0; i < dataParamCount; i++)
+            {
+                int doInput_i = i + InputParamCount;
+                int doOutput_i = i + OutputParamCount;
+
+                if (!DA.GetDataTree(doInput_i, out data)) { continue; }
+                DA.SetDataTree(doOutput_i, data);
+            }
         }
 
         public bool CanInsertParameter(GH_ParameterSide side, int index)
