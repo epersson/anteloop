@@ -67,14 +67,14 @@ namespace Anteloop
             if (!DA.GetData(1, ref condition)) { return; }
 
 
-            int dataParamCount = Math.Min(Params.Input.Count - InputParamCount, DoComponent.Params.Output.Count - DoComponent.OutputParamCount);
+            int dataParamCount = Math.Min(Params.Input.Count - InputParamCount, loopStart.Params.Output.Count - loopStart.OutputParamCount);
 
             if (condition)
             {
                 for (int i = 0; i < dataParamCount; i++)
                 {
                     int while_i = i + InputParamCount;
-                    int do_i = i + DoComponent.OutputParamCount;
+                    int do_i = i + loopStart.InputParamCount;
 
                     if (!DA.GetDataTree(while_i, out data)) { continue; }
                     loopStart.Params.Input[do_i].ClearData();
