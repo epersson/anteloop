@@ -55,7 +55,8 @@ namespace Anteloop
                 Name = "Data " + normalizedIndex.ToString(),
                 NickName = "D" + normalizedIndex.ToString(),
                 Description = "Data",
-                Optional = true
+                Optional = true,
+                Access = GH_ParamAccess.tree
             };
         }
     }
